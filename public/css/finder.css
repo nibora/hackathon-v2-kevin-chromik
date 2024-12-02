@@ -1,0 +1,60 @@
+.setup {
+  display: flex;
+  flex-direction: row;
+  height: 400px;
+  max-width: 900px;
+  background-color: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  margin-bottom: 100px;
+}
+
+.persondiv {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  margin: 15px;
+  padding: 20px;
+  width: 250px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.persondiv:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.persondiv p {
+  font-size: 1.1em;
+  margin: 10px 0;
+  color: #333;
+}
+
+.persondiv p:last-child {
+  font-style: italic;
+  color: #b724db;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.person-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
