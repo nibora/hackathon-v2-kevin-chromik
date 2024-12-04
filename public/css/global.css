@@ -1,6 +1,6 @@
 body {
-  font-family: 'Inter', 'Poppins', 'Montserrat', sans-serif;
-  background: linear-gradient(to bottom, #b483e0 0%, #d5b4e0 50%, #ffffff 100%);
+  font-family: 'Montserrat', sans-serif;
+  background-image: url('../assets/background.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   margin: 0;
@@ -23,7 +23,7 @@ p {
 
 .navbar a {
   text-decoration: none;
-  color: #333;
+  color: white;
   font-weight: bold;
 }
 
@@ -39,4 +39,8 @@ p {
 
 .navbar button:hover {
   background-color: #8c15bb;
+}
+
+.navbar a:first-child {
+  font-size: 2rem;
 }

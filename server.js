@@ -1,8 +1,15 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 const path = require('path');
+const bcrypt = require('bcrypt');
+const session = require('express-session');
+const User = require('./models/User');
+require('dotenv').config();
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -25,8 +32,74 @@ const data = [
   { id: 15, name: 'Test15', age: 41, interest: 'yoga', gender: 'male' },
 ];
 
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.render('login', { error: 'E-Mail oder Passwort ist falsch!' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.render('login', { error: 'E-Mail oder Passwort ist falsch!' });
+    }
+
+    req.session.user = user;
+    res.render('index');
+  } catch (error) {
+    res.render('login', { error: 'Ein Fehler ist aufgetreten!' });
+  }
+});
+
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send('Fehler beim Logout.');
+    }
+
+    res.redirect('/login');
+  });
+});
+
+app.get('/register', (req, res) => {
+  res.render('register');
+});
+
+app.post('/register', async (req, res) => {
+  const { name, email, password } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ name, email, password: hashedPassword });
+    await newUser.save();
+    res.render('login', { name });
+  } catch (error) {
+    res.render('register', { error: 'Ein Fehler ist aufgetreten!' });
+  }
+});
+
 app.get('/', (req, res) => {
-  res.render('index');
+  user = req.session.user;
+  if (!user) {
+    res.render('login');
+  } else {
+    res.render('index');
+  }
 });
 
 app.get('/finder', (req, res) => {
